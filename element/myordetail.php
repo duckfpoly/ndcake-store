@@ -1,20 +1,21 @@
 <?php
-$orderId = $_GET['orderId'];
-if (isset($orderId)) {
-    $sql = "SELECT 
-        orders.id,
-        user_guest.fullname,
-        user_guest.phone,
-        user_guest.address,
-        orders.orderDate,
-        orders.status,
-        orders.received_date
-        FROM orders,user_guest
-        WHERE orders.id = $orderId
-        AND orders.id_guest = user_guest.id
-        ";
+    if(isset($user['id'])){
+        $id_user = $user['id'];
+        $idDh = $_GET['orderId'];
+        $sql = "SELECT 
+            orders.id,
+            user_guest.fullname,
+            user_guest.phone,
+            user_guest.address,
+            orders.orderDate,
+            orders.status,
+            orders.received_date
+            FROM orders
+            INNER JOIN user_guest ON orders.id_guest = user_guest.id
+            WHERE orders.id = $idDh
+            AND user_guest.id = $id_user
+            ";
     $result = mysqli_query($conn, $sql);
-}
 ?>
 <style>
 	@import url('styles/categories_style.css');
@@ -24,7 +25,7 @@ if (isset($orderId)) {
     <ul>
         <li><a href="?">Trang chủ </a> </li>
         <li><a href="?page=myorder"><i class="fa fa-angle-right" aria-hidden="true"></i> Đơn mua</a></li>
-        <li class="active"><a href="?page=myordetail&orderId=<?php echo $orderId ?>"><i class="fa fa-angle-right" aria-hidden="true"></i>Chi tiết đơn mua</a></li>
+        <li class="active"><a href="?page=myordetail"><i class="fa fa-angle-right" aria-hidden="true"></i>Chi tiết đơn mua</a></li>
     </ul>
 </div>
 <h2 class="text-center mt-5 mb-5">CHI TIẾT ĐƠN MUA</h2>
@@ -52,21 +53,20 @@ if (isset($orderId)) {
                             <br>
                             <br>
                             <?php
-                            $orderId = $_GET['orderId'];
                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 if (isset($_POST["success"])) {
-                                    $sql = "UPDATE orders SET status = 'Đã nhận được hàng', received_date = now() WHERE id = {$orderId}";
+                                    $sql = "UPDATE orders SET status = 'Đã nhận được hàng', received_date = now() WHERE id = {$idDh}";
                                     $query = mysqli_query($conn, $sql);
                                     if ($query) {
-                                        echo '<script language="javascript">window.location="?page=myordetail&orderId=' . $orderId . '";</script>';
+                                        echo '<script language="javascript">window.location="?page=myordetail";</script>';
                                     } else {
                                         echo "Error: " . $sql . "<br>" . $conn->error;
                                     }
                                 } elseif (isset($_POST["destroy"])) {
-                                    $sql = "UPDATE orders SET status = 'Đơn hàng bị hủy', received_date = now() WHERE id = {$orderId}";
+                                    $sql = "UPDATE orders SET status = 'Đơn hàng bị hủy', destroyDate = now() WHERE id = {$idDh}";
                                     $query = mysqli_query($conn, $sql);
                                     if ($query) {
-                                        echo '<script language="javascript">window.location="?page=myordetail&orderId=' . $orderId . '";</script>';
+                                        echo '<script language="javascript">window.location="?page=myordetail";</script>';
                                     } else {
                                         echo "Error: " . $sql . "<br>" . $conn->error;
                                     }
@@ -75,23 +75,23 @@ if (isset($orderId)) {
                             ?>
                             <form method="post">
                                 <?php
-                                $sql = "SELECT orders.status FROM orders WHERE id = {$orderId}";
+                                $sql = "SELECT orders.status FROM orders WHERE id = {$idDh}";
                                 $query = mysqli_query($conn, $sql);
                                 ?>
                                 <?php foreach ($result as $tracking) :
                                     if ($tracking['status'] == 'Đơn hàng mới ! - Chờ duyệt') {
                                         echo '
-                                <button type="submit" name="destroy" class="btn btn-outline-danger" style="margin-left: 5px;">Hủy đơn hàng</button>
+                                    <button type="submit" name="destroy" class="btn btn-outline-danger" style="margin-left: 5px;">Hủy đơn hàng</button>
                             ';
                                     }
                                     if ($tracking['status'] == 'Đang giao') {
                                         echo '
-                                <button type="submit" name="success" class="btn btn-outline-success" style="margin-left: 5px;">Đã nhận được hàng</button>
+                                    <button type="button" name="success" class="btn btn-outline-success" style="margin-left: 5px;">Đã nhận được hàng</button>
                             ';
                                     }
                                     if ($tracking['status'] == 'Đơn hàng bị hủy bởi admin') {
                                         echo '
-                                <button disabled type="submit" name="success" class="btn btn-outline-danger" style="margin-left: 5px;">Đơn hàng bị hủy</button>
+                                    <button disabled class="btn btn-outline-danger" style="margin-left: 5px;">Đơn hàng bị hủy</button>
                             ';
                                     }
                                 endforeach;
@@ -102,7 +102,7 @@ if (isset($orderId)) {
                 </article>
             <?php endforeach; ?>
             <?php
-            $sql = "SELECT orders.status FROM orders WHERE id = {$orderId}";
+            $sql = "SELECT orders.status FROM orders WHERE id = {$idDh}";
             $query = mysqli_query($conn, $sql);
             ?>
             <?php foreach ($result as $tracking) :
@@ -176,9 +176,7 @@ if (isset($orderId)) {
                 <?php
                 $tongtien = 0;
                 $ship = 20;
-                $orderId = $_GET['orderId'];
-                if (isset($orderId)) {
-                    $conn = mysqli_connect('localhost', 'root', '', 'storemooncake');
+                if (isset($idDh)) {
                     $sql = "SELECT 
                     products.image,
                     products.name,
@@ -186,9 +184,10 @@ if (isset($orderId)) {
                     ordersdetail.quantity,
                     ordersdetail.price
                     FROM orders,ordersdetail,products
-                    WHERE orders.id = $orderId
+                    WHERE orders.id = $idDh
                     AND orders.id = ordersdetail.orderid
                     AND ordersdetail.id_prd = products.id
+                    AND orders.id_guest = $id_user
                     ";
                     $result = mysqli_query($conn, $sql);
                 }
@@ -382,3 +381,8 @@ if (isset($orderId)) {
         border-radius: 1px
     }
 </style>
+<?php } 
+    else {
+
+    }
+?>

@@ -1,9 +1,9 @@
 <?php
-include('element/connectdb.php');
-header('Content-Type: text/html; charset=UTF-8');
-$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
-$sql = "SELECT * FROM products";
-$query = mysqli_query($conn, $sql);
+	include('element/connectdb.php');
+	header('Content-Type: text/html; charset=UTF-8');
+	$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
+	$sql = "SELECT * FROM products";
+	$query = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,10 +26,42 @@ $query = mysqli_query($conn, $sql);
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="icon" href="https://cdn.glitch.global/e4e5a7c2-c10e-4ecd-b570-505542b6edc1/5d4a7f2c-59f1-4d1e-9d77-0350110d3612.img1.png?v=1657599954858">
 
+<script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "103124105646452");
+      chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+
+    <!-- Your SDK code -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v14.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
 </head>
 
 <body onload="time()">
+    <!-- Messenger Plugin chat Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your Plugin chat code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    
 	<div class="super_container">
 		<header class="header trans_300">
 			<div class="top_nav">
@@ -50,9 +82,9 @@ $query = mysqli_query($conn, $sql);
 												<i class="fa fa-angle-down"></i>
 											</a>
 											<ul class="account_selection">
-												<li><a href="?page=profile_guest&id=<?php echo $user['id'] ?>"><i class="fa fa-address-card" aria-hidden="true"></i>Thông tin cá nhân</a></li>
-												<li><a href="?page=myorder&id=<?php echo $user['id'] ?>"><i class="fa fa-shopping-basket" aria-hidden="true"></i>Đơn mua</a></li>
-												<li><a href="./element/signout.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng xuất</a></li>
+												<li><a href="?page=profile_guest"><i class="fa fa-address-card" aria-hidden="true"></i>Thông tin cá nhân</a></li>
+												<li><a href="?page=myorder"><i class="fa fa-shopping-basket" aria-hidden="true"></i>Đơn mua</a></li>
+												<li><a href="element/signout.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng xuất</a></li>
 											</ul>
 										</li>
 									<?php } else { ?>
@@ -62,8 +94,8 @@ $query = mysqli_query($conn, $sql);
 												<i class="fa fa-angle-down"></i>
 											</a>
 											<ul class="account_selection">
-												<li><a href="./element/signin.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
-												<li><a href="./element/signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
+												<li><a href="element/dangnhap.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+												<li><a href="element/signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
 											</ul>
 										</li>
 									<?php } ?>
@@ -85,7 +117,7 @@ $query = mysqli_query($conn, $sql);
 									<li><a href="?page=home">Trang chủ</a></li>
 									<li class="dropdown ">
 										<a href="" data-toggle="dropdown ">
-											ND Cake
+											NDCAKE MENU
 											<i style="padding:1px" class="fa-solid fa-angle-down"></i>
 										</a>
 										<ul class="dropdown-menu text-center" style="min-width: 150px;">
@@ -93,17 +125,7 @@ $query = mysqli_query($conn, $sql);
 											<li><a href="?page=about">Giới thiệu</a></li>
 											<li><a href="?page=contact">Liên hệ</a></li>
 											<li><a href="?page=news">Blogs</a></li>
-										</ul>
-									</li>
-									<li class="dropdown">
-										<a href="" data-toggle="dropdown">
-											Chính sách
-											<i style="padding:1px" class="fa-solid fa-angle-down"></i>
-										</a>
-										<ul class="dropdown-menu text-center" style="min-width: 230px;">
-											<li><a href="#">Chính sách đổi trả</a></li>
-											<li><a href="#">Chính sách vận chuyển</a></li>
-											<li><a href="#">Hướng dẫn mua hàng</a></li>
+											<li><a href="?page=gopy">Góp ý</a></li>
 										</ul>
 									</li>
 								</ul>
@@ -186,14 +208,14 @@ $query = mysqli_query($conn, $sql);
 									</li>
 									<?php if (isset($user['username'])) { ?>
 										<li style="margin-left: 20px;">
-											<a href="?page=profile_guest&id=<?php echo $user['id'] ?>">
+											<a href="?page=profile_guest">
 												<img style="width:20px; border-radius:10px" src="<?php echo $user['url_image'] ?>" alt="">
 												<span><?php echo $user['username'] ?></span>
 											</a>
 										</li>
 									<?php } else { ?>
 										<li style="margin-left: 10px;" class="user">
-											<a href="./element/signin.php"><i class="fa fa-user" aria-hidden="true"></i></a>
+											<a href="element/dangnhap.php"><i class="fa fa-user" aria-hidden="true"></i></a>
 										</li>
 									<?php } ?>
 								</ul>
@@ -218,7 +240,7 @@ $query = mysqli_query($conn, $sql);
 								<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="menu_selection">
-								<li><a href="?page=profile_guest&id=<?php echo $user['id'] ?>"><i class="fa fa-address-card" aria-hidden="true"></i> Thông tin cá nhân</a></li>
+								<li><a href="?page=profile_guest"><i class="fa fa-address-card" aria-hidden="true"></i> Thông tin cá nhân</a></li>
 								<li><a href="?page=myorder"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Đơn mua</a></li>
 								<li><a href="./element/signout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a></li>
 							</ul>
@@ -230,25 +252,45 @@ $query = mysqli_query($conn, $sql);
 								<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="menu_selection">
-								<li><a href="./element/signin.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a></li>
+								<li><a href="./element/dangnhap.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a></li>
 								<li><a href="./element/signup.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Đăng ký</a></li>
 							</ul>
 						</li>
 					<?php } ?>
 					<li class="menu_item"><a href="?page=home">Trang chủ</a></li>
-					<li class="menu_item"><a href="?page=products">Sản phẩm</a></li>
-					<li class="menu_item"><a href="?page=about">Giới thiệu</a></li>
-					<li class="menu_item"><a href="?page=contact">Liên hệ</a></li>
-					<li class="menu_item"><a href="?page=news">Blogs</a></li>
+					<li class="menu_item has-children">
+						<a href="#">
+							NDCAKE
+							<i class="fa fa-angle-down"></i>
+						</a>
+					<ul class="menu_selection">
+						<li><a href="?page=products">Sản phẩm</a></li>
+						<li><a href="?page=about">Giới thiệu</a></li>
+						<li><a href="?page=contact">Liên hệ</a></li>
+						<li><a href="?page=news">Blogs</a></li>
+					</ul>
+					</li>
 					<li class="menu_item has-children">
 						<a href="#">
 							Chính sách
 							<i class="fa fa-angle-down"></i>
 						</a>
 						<ul class="menu_selection">
-							<li>Chính sách đổi trả</li>
-							<li>Chính sách vận chuyển</li>
-							<li>Hướng dẫn mua hàng</li>
+							<li><a href="#">Chính sách, điều khoản, quy định chung</a></li>
+							<li><a href="#">Chính sách cho doanh nghiệp</a></li>
+							<li><a href="#">Chính sách hàng đạt chuẩn</a></li>
+							<li><a href="#">Bảo mật thông tin khách hàng</a></li>
+							<li><a href="#">Chính sách vận chuyển</a></li>
+						</ul>
+					</li>
+					<li class="menu_item has-children">
+						<a href="#">
+							Hỗ trợ khách hàng
+							<i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="menu_selection">
+							<li><a href="#">Hướng dẫn mua hàng</a></li>
+							<li><a href="#">Hỗ trợ về đơn hàng</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -340,15 +382,15 @@ $query = mysqli_query($conn, $sql);
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-							<h4>Promotions</h4>
+							<h4>Subcribe</h4>
 							<p>Đăng ký để nhận thông tin khuyến mãi sớm nhất</p>
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<form method="post">
 							<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-								<input id="newsletter_email" type="text" name="email_sale" placeholder="Your email" data-error="Valid email is required.">
-								<button id="newsletter_submit" class="newsletter_submit_btn trans_300">Send</button>
+								<input id="newsletter_email" type="text" name="email_sale" placeholder="Your email" disabled data-error="Valid email is required.">
+								<button disabled id="newsletter_submit" class="newsletter_submit_btn trans_300">Send</button>
 							</div>
 						</form>
 					</div>
@@ -361,17 +403,39 @@ $query = mysqli_query($conn, $sql);
 					<div class="col-lg-6">
 						<div class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
 							<ul class="footer_nav">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">FAQs</a></li>
+								<li><a href="?page=news">Blog</a></li>
 								<li><a href="?page=contact">Contact us</a></li>
+								<li class="dropdown">
+									<a href="" data-toggle="dropdown">
+										Chính sách
+										<i style="padding:1px" class="fa-solid fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu text-center" style="min-width: 350px;">
+										<li><a href="#">Chính sách, điều khoản, quy định chung</a></li><br>
+										<li><a href="#">Chính sách cho doanh nghiệp</a></li><br>
+										<li><a href="#">Chính sách hàng đạt chuẩn</a></li><br>
+										<li><a href="#">Bảo mật thông tin khách hàng</a></li><br>
+										<li><a href="#">Chính sách vận chuyển</a></li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="" data-toggle="dropdown">
+										Hỗ trợ khách hàng
+										<i style="padding:1px" class="fa-solid fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu text-center" style="min-width: 230px;">
+										<li><a href="#">Hướng dẫn mua hàng</a></li>
+										<li><a href="#">Hỗ trợ về đơn hàng</a></li>
+									</ul>
+								</li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
 							<ul>
-								<li><a href="https://www.facebook.com/ndmooncake"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+								<li><a href="https://www.facebook.com/ndmooncake"><i class="fa-brands fa-facebook-f"></i></a></li>
+								<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -386,6 +450,7 @@ $query = mysqli_query($conn, $sql);
 				</div>
 		</footer>
 	</div>
+	
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="styles/bootstrap4/popper.js"></script>
 	<script src="styles/bootstrap4/bootstrap.min.js"></script>

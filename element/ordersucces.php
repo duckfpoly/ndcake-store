@@ -1,5 +1,6 @@
 <?php 
-    $idOrder = $_GET['orderid'];
+    $order = mysqli_fetch_array($conn->query("SELECT id FROM orders ORDER BY id DESC LIMIT 1"));
+    $idOrder = $order['id'];
 ?>
 <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css'>
 <style>
@@ -37,11 +38,12 @@
                             <div class="row d-flex justify-content-center align-items-center h-100">
                                 <div class="col">
                                     <p class="text-center"><span class="h2">Đơn hàng</span>
+                                    <!-- start -->
                                     <div class="card mb-4 ">
                                         <div class="card-body p-4">
                                         <?php 
                                             $tong = 0;
-                                            $query = "SELECT products.image,products.name,products.fill,products.price,ordersdetail.quantity FROM ordersdetail 
+                                            $query = "SELECT products.image,products.name,products.fill,products.type,products.price,ordersdetail.quantity FROM ordersdetail 
                                             INNER JOIN products ON ordersdetail.id_prd = products.id
                                             INNER JOIN orders ON orders.id = ordersdetail.orderid
                                             WHERE orders.id = {$idOrder}
@@ -62,9 +64,9 @@
                                                 </div>
                                                 <div class="col-md-2 d-flex justify-content-center">
                                                     <div>
-                                                        <p class="small text-muted mb-4 pb-2">Khối lượng</p>
+                                                        <p class="small text-muted mb-4 pb-2">Loại</p>
                                                         <p class="lead fw-normal mb-0"><i class="fa-solid fa-weight-hanging"></i>
-                                                            150gr</p>
+                                                        <?php echo $items['type'] ?></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 d-flex justify-content-center">
@@ -92,10 +94,6 @@
                                             }
                                         ?>
                                         <div class="col-md-6 d-flex justify-content-center">
-                                            <div>
-                                                <p class=" text-muted mb-1 pb-2">Tổng tiền thanh toán</p>
-                                                <p class="lead fw-normal mb-0"><?php echo  $tong?>.000 VNĐ</p>
-                                            </div>
                                             <div style="margin-left:100px ;">
                                                 <p class=" text-muted mb-1 pb-2">Bạn có thể theo dõi đơn hàng</p>
                                                 <a href="?page=myorder">Tại đây</a>
@@ -104,6 +102,9 @@
 
                                         </div>
                                     </div>
+
+
+                                    <!-- end -->
                                 </div>
                             </div>
                         </div>
@@ -190,7 +191,7 @@
      
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
-$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 try {
     //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
@@ -214,8 +215,8 @@ try {
     // Add a recipient
     //Content
     $mail->isHTML(true);     
-    $mail->AddReplyTo('ndcake.store@gmail.com', 'NDCAKE STORE');                             // Set email format to HTML
-    $mail->Subject = 'NDCAKE Store - Purchase order';
+    $mail->AddReplyTo('ndcake.store@gmail.com', 'NDCAKE STORE');
+    $output = '<p>Dear user,</p>';
     $query = "SELECT 
         orders.id,orders.ordermethod,orders.orderDate
         FROM orders
@@ -224,22 +225,60 @@ try {
     $result = $conn->query($query);
     if (mysqli_num_rows($result) > 0) :
         foreach ($result as $items) :
-        $mail->Body = '
-        <h1>Cảm ơn quý khách đã đặt hàng ❤❤❤</h1>
-        <p>Chúng tôi xin được gửi 1 số thông tin của đơn hàng</p>
-        <div>
+    $output .= '
+        <h1>Cảm ơn quý khách đã đặt hàng bên NDCAKE ❤❤❤</h1>
+            <p>Chúng tôi xin được gửi 1 số thông tin của đơn hàng</p>
             <div>
-                <ul>
-                    <li>Mã đơn hàng: <strong>NDCAKE-DHBTT-N'. $items['id'] .'</strong></span></li>
-                    <li><span span class="text-muted">Hình thức thanh toán: <strong>'.$items['ordermethod'] .'</strong></span></li>
-                    <li><span class="text-muted">Thời gian đặt hàng: <strong>'. $items['orderDate'] .'</strong></span></li>
-                </ul>
+                <div>
+                    <ul>
+                        <li>Mã đơn hàng: <strong>NDCAKE-DHBTT-N'. $items['id'] .'</strong></span></li>
+                        <li><span span class="text-muted">Hình thức thanh toán: <strong>'.$items['ordermethod'] .'</strong></span></li>
+                        <li><span class="text-muted">Thời gian đặt hàng: <strong>'. $items['orderDate'] .'</strong></span></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <p>Để xem chi tiết đơn hàng, quý khách vui lòng click vào link sau : https://www.youtube.com/watch?v=-lg7fOU8Hro</p>
-        ';
+        <p>Đơn hàng gồm các mặt hàng như sau: </p>
+            ';
         endforeach;
     endif;
+    $tong = $ship = 0;
+    $ship = 20;
+    $query = "SELECT products.name,products.fill,products.price,products.type,ordersdetail.quantity FROM ordersdetail 
+    INNER JOIN products ON ordersdetail.id_prd = products.id
+    INNER JOIN orders ON orders.id = ordersdetail.orderid
+    WHERE orders.id = {$idOrder}
+    ";
+    $result = $conn->query($query);
+    if (mysqli_num_rows($result) > 0) {
+        foreach ($result as $data) {
+    $output .= '
+        <ul>
+            <li>Tên sản phẩm: '. $data['name'] .'</li>
+            <li>Loại/Màu: '. $data['type'] .'</li>
+            <li>Số lượng: '. $data['quantity'] .' cái</li>
+            <li>Giá: '. $data['price'] .'.000 VNĐ</li>
+            <li>Tổng tiền: '. ($data['price'] * $data['quantity']) .'.000 VNĐ</li>
+        </ul>
+    ';
+        $tong = ($tong + ($data['price'] * $data['quantity']));
+        }
+    }
+    $output .= '
+        <p>Phí ship: '.$ship.'.000 VNĐ</p>
+        <strong>Thành tiền: '. ($tong + $ship) .'.000 VNĐ</strong>
+        <p>Để xem trạng thái đơn hàng, quý khách click <a href="https://storendcake.000webhostapp.com/?page=myorder">Vào đây</a></p>
+    ';  
+    $output .= '
+        <p>Nếu đơn hàng này không phải của bạn do bị hack tài khoản, lỗi hệ thống của NDCAKE, hay một lỗi nào đó <br>
+        Vui lòng nhấn <a href="mailto:ndcake.store@gmai.com">vào đây</a> để gửi email liên hệ lại với chúng tôi 
+        hoặc có thể liên hệ trực tiếp qua số điện thoại: <a href="tel:+84823565831">+8482 3565 831</a></p>
+    ';         
+    $output .= '<p>Thanks,</p>';
+    $output .= '<p>ADMIN TEAM NDCAKE</p>';
+    // Set email format to HTML
+    $body = $output;
+    $mail->Subject = 'NDCAKE Store - Purchase order';
+    $mail->Body = $body;
     $mail->send();
     echo 'Chúc bạn một ngày tốt lành !';
 } catch (Exception $e) {
@@ -247,3 +286,7 @@ try {
 }
 ?>
 
+<ul>
+    <li>Tên sản phẩm</li>
+    <li></li>
+</ul>

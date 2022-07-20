@@ -1,415 +1,190 @@
 <?php
-include('insert_user_guest.php');
+    include('insert_user_guest.php');
 ?>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>NDCAKE - ĐĂNG KÝ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <style>
-    html {
-        font-size: 10px;
+    body {
+        background-color: #aaa;
+    }
+    ::-webkit-scrollbar {
+    width: 1px;
     }
 
-    .btn-get {
-        font-size: 1.8rem;
-        font-family: "Quicksand", sans-serif;
-        color: #fff !important;
-        text-transform: capitalize;
-        background-image: -webkit-gradient(linear, left top, right top, from(#b70b83), to(#33077f));
-        background-image: linear-gradient(to right, #b70b83, #33077f);
-        padding: 10px 20px 10px;
-        position: relative;
-        border: 0;
-        border-radius: 5px;
-        overflow: hidden;
-        text-transform: capitalize !important;
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+
     }
 
-    .btn-get::before {
-        position: absolute;
-        content: '';
-        top: 0;
-        height: 100%;
-        width: 0;
-        left: 0;
-        background-image: -webkit-gradient(linear, left top, right top, from(#33077f), to(#b70b83));
-        background-image: linear-gradient(to right, #33077f, #b70b83);
-        -webkit-transition: .5s ease-out;
-        transition: .5s ease-out;
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #f1f1f1;
+    border-radius: 5px;
+    
     }
 
-    .btn-get:hover::before {
-        width: 100%;
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #f1f1f1;
     }
-
-    .btn-get span {
-        position: relative;
-        z-index: 2;
+    .g-0 {
+        box-shadow: 0 0 100px 0 #fff;
     }
-
-
-    .main__form .form-group {
-        position: relative;
-        margin-bottom: 2rem;
+    
+    .form-group.invalid .form-control {
+        border-color: #f33a58;
     }
-
-    .main__form .form-group label {
-        font-family: "Quicksand", sans-serif;
-        font-size: 1.6rem;
-        color: #575757;
-        padding: 0 2.5rem;
-        position: absolute;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        transform: translateY(-50%);
-        z-index: 0;
-        -webkit-transition: .3s all;
-        transition: .3s all;
+    .form-group.invalid .form-message {
+        color: #f33a58;
     }
-
-    .main__form .form-group input,
-    .main__form .form-group textarea {
-        font-size: 1.6rem;
-        border-color: #f7f7f7;
-        padding: 0 2.5rem;
-        position: relative;
-        z-index: 1;
-        background: transparent;
-    }
-
-    .main__form .form-group input:not(:placeholder-shown)+label,
-    .main__form .form-group textarea:not(:placeholder-shown)+label {
-        top: 2%;
-        background: #fff;
-        z-index: 2;
-        font-weight: 600;
-    }
-
-    .main__form .form-group input:focus,
-    .main__form .form-group textarea:focus {
-        outline: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
-
-    .main__form .form-group input:focus::-webkit-input-placeholder,
-    .main__form .form-group textarea:focus::-webkit-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group input:focus:-ms-input-placeholder,
-    .main__form .form-group textarea:focus:-ms-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group input:focus::-ms-input-placeholder,
-    .main__form .form-group textarea:focus::-ms-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group input:focus::placeholder,
-    .main__form .form-group textarea:focus::placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group input:focus+label,
-    .main__form .form-group textarea:focus+label {
-        background: #fff;
-        z-index: 2;
-        top: 2%;
-        font-weight: 600;
-    }
-
-    .main__form .form-group input::-webkit-input-placeholder,
-    .main__form .form-group textarea::-webkit-input-placeholder {
-        color: transparent;
-    }
-
-    .main__form .form-group input:-ms-input-placeholder,
-    .main__form .form-group textarea:-ms-input-placeholder {
-        color: transparent;
-    }
-
-    .main__form .form-group input::-ms-input-placeholder,
-    .main__form .form-group textarea::-ms-input-placeholder {
-        color: transparent;
-    }
-
-    .main__form .form-group input::placeholder,
-    .main__form .form-group textarea::placeholder {
-        color: transparent;
-    }
-
-    .main__form .form-group input {
-        height: 6rem;
-    }
-
-    .main__form .form-group.form-message label {
-        font-family: "Quicksand", sans-serif;
-        font-size: 1.6rem;
-        color: #575757;
-        padding: 2.5rem;
-        position: absolute;
-        top: -5%;
-        -webkit-transform: unset;
-        transform: unset;
-        z-index: 0;
-        -webkit-transition: .3s all;
-        transition: .3s all;
-    }
-
-    .main__form .form-group.form-message textarea {
-        padding: 2.5rem;
-    }
-
-    .main__form .form-group.form-message textarea:not(:placeholder-shown)+label {
-        top: -8% !important;
-        background: #fff;
-        z-index: 2;
-        font-weight: 600;
-        padding: 0 2.5rem !important;
-    }
-
-    .main__form .form-group.form-message textarea:focus {
-        outline: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
-
-    .main__form .form-group.form-message textarea:focus::-webkit-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group.form-message textarea:focus:-ms-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group.form-message textarea:focus::-ms-input-placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group.form-message textarea:focus::placeholder {
-        color: #999;
-    }
-
-    .main__form .form-group.form-message textarea:focus+label {
-        background: #fff;
-        z-index: 2;
-        top: -8% !important;
-        font-weight: 600;
-        padding: 0 2.5rem !important;
-    }
-
-    .main__form label.btn-attached {
-        background: #b30b83;
-        padding: 11px 42px;
-        border-radius: 3px;
-        color: #fff;
-        font-size: 1.6rem;
-        -webkit-transition: .3s all;
-        transition: .3s all;
-    }
-
-    .main__form label.btn-attached:hover {
-        cursor: pointer;
-        background: #33077f;
-    }
-
-    .main__form .form-groups.form-check {
-        margin: 1.5rem 0;
-    }
-
-    .main__form .form-groups.form-check input {
-        position: relative;
-    }
-
-    .main__form .form-groups.form-check label {
-        font-size: 1.4rem;
-        color: #718399;
-    }
-
-    .main__form button.btn.btn-get {
-        position: relative;
-        top: 0px;
-        margin: 0 0 -80px;
-        font-size: 20px;
-    }
-
-
-    .project__form {
-        font-size: 1.6rem;
-    }
-
-    .project__form h3 {
-        font-family: "Quicksand", sans-serif;
-        ;
-        font-size: 4.1rem;
-        color: #272727;
-        line-height: 8.8rem;
-        color: #fff;
-    }
-
-    .project__form::before {
-        display: none;
-    }
-
-    .ready__started {
-        background: linear-gradient(150deg, #b70b83, #33077f);
-        background-size: 200% 200%;
-        -webkit-animation: AnimationGradient 5s ease infinite;
-        animation: AnimationGradient 5s ease infinite;
-        padding: 0rem 0 5rem;
-        position: relative;
-    }
-
-    .ready__started::before {
-        background: url(../images/dot-back.png) no-repeat bottom right/contain;
-        content: '';
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-        top: 0;
-    }
-
-    .ready__started p {
-        color: #fff;
-    }
-
-    .ready__started-box {
-        background: #fff;
-        padding: 15rem;
-        border-radius: 5px;
-        margin-top: 0rem;
-    }
-
-    .ready__started-box h3 {
-        font-size: 5rem;
-        font-family: "Quicksand", sans-serif;
-        font-weight: 900;
-    }
-
-    .ready__started-box p {
-        color: #272727;
-        font-size: 2.2rem;
-        font-family: "Quicksand", sans-serif;
-    }
-
-    @-webkit-keyframes AnimationGradient {
-        0% {
-            background-position: 26% 0%;
-        }
-
-        50% {
-            background-position: 75% 100%;
-        }
-
-        100% {
-            background-position: 26% 0%;
+    @media (min-width: 768px) {
+        .gradient-form {
+            height: 100vh !important;
         }
     }
-
-    @keyframes AnimationGradient {
-        0% {
-            background-position: 26% 0%;
-        }
-
-        50% {
-            background-position: 75% 100%;
-        }
-
-        100% {
-            background-position: 26% 0%;
+    @media (min-width: 769px) {
+        .gradient-custom-2 {
+            border-top-right-radius: .3rem;
+            border-bottom-right-radius: .3rem;
+            
         }
     }
-
-    section.ready__started.project__form {
-        margin-bottom: 40rem;
+    @media (min-width: 990px) {
+        .box_content {
+            width: 100%;
+            text-align: center;
+            margin-top: -300px;
+        }
+        .col-lg-6 {
+        height: 90vh;
+        overflow: auto;
+        }
+        .g-0 {
+        height: 90vh;
+        }
     }
-
-    section.ready__started.project__form .ready__started-box {
-        position: relative;
-        margin-bottom: -40rem;
-        -webkit-box-shadow: 0 3px 3.2rem rgba(0, 0, 0, 0.08);
-        box-shadow: 0 3px 3.2rem rgba(0, 0, 0, 0.08);
+    .gradient-custom-2 {
+        background: url('https://tmdl.edu.vn/wp-content/uploads/2022/07/hinh-nen-tet-trung-thu-dep-nhat-40.jpg') 100%;
     }
-
-    .nav-link {
-        color: #000;
-    }
-
-    .nav-link:hover {
-        color: #fff;
-    }
-
-    .nav-item {
-        position: absolute;
-        /* bottom: 0; */
-        left: -15px;
-        /* bottom: 0; */
+    .form-check-input:checked {
+        background-color: cadetblue;
+        border-color: cadetblue;
     }
 </style>
-<section class="ready__started project__form">
-    <div class="col-md-1 nav-item">
-        <a href="../">
-            <button type="button" class="btn btn-outline-light">
-                <<< Quay lại trang chủ</button>
-        </a>
+</head>
+<body>
+        <!-- start -->
+        <section class="h-100 gradient-form content">
+            <div class="container  h-100">
+                <div class="row d-flex align-items-center justify-content-center h-100">
+                    <div class="col-xl-10">
+                        <div class="card rounded-3 text-black">
+                            <div class="row g-0">
+                                <div class="col-lg-6 gradient-custom-2 d-flex align-items-center justify-content-center">
+                                    <div class="card-body p-md-5 mx-md-4  mb-2">
+                                        <div class="text-center content-left">
+                                            <div class="box_content">
+                                                <img src="https://cdn.glitch.global/e4e5a7c2-c10e-4ecd-b570-505542b6edc1/img2.png?v=1656818794378" style="width: 185px;" alt="logo">
+                                                <h2 style="color:#fff ;" class="mt-1 mb-3 pb-1">WE ARE NDCAKE TEAM</h2>
+                                                <p style="color:#fff;" class="text-center mb-5">REGISTER TO NDCAKE</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <form method="post" class="p-3 form" id="form-1">
+                                        <div class="form-group">
+                                            <label for="fullname">Họ và tên</label>
+                                            <input name="fullname" type="text" class="form-control" id="fullname">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Số điện thoại</label>
+                                            <input name="phone" type="text" class="form-control" id="phone">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input name="email" type="text" class="form-control" id="email">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Địa chỉ</label>
+                                            <input name="address" type="text" class="form-control" id="address">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <input name="username" type="text" class="form-control" id="username">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input name="password" type="password" class="form-control" id="password">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="repassword">Nhập lại password</label>
+                                            <input name="repassword" type="password" class="form-control" id="repassword">
+                                            <span class="form-message"><br></span>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="showpassword()">
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Show Password</label>
+                                        </div>
+                                        <div class="text-center mt-5 mb-5 pt-1">
+                                            <button class="btn btn-outline-secondary btn-block fa-lg mb-3" name="register" type="submit">Đăng ký</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center mb-5">
+                                            <p class="mb-0 me-2">Bạn đã có tài khoản!</p>
+                                            <!-- <button onclick="location.href='dangnhap.php'" class="btn btn-outline-danger">Đăng nhập ngay</button> -->
+                                            <a href="dangnhap.php" class="btn btn-outline-danger">Đăng nhập ngay</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <div class="container">
-        <h3 class="text-center">NDMOONCAKE - Đăng ký tài khoản</h3>
-        <div class="ready__started-box">
-            <form method="post" class="main__form" name="myForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="fullname" aria-describedby="fullname" placeholder="Nguyễn Văn A" required name="fullname">
-                            <label for="fullname">Họ và tên</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="phone" aria-describedby="phone" placeholder="xxx-xxx-xxxx" required name="phone">
-                            <label for="phone">Số điện thoại</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="example@gmail.com" required name="email">
-                            <label for="email">Email</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input name="address" type="text" class="form-control" id="address" aria-describedby="address" placeholder="Số ... Ngõ/Ngách ... Đường ... Phường ... Tỉnh ..." required>
-                            <label for="address">Địa chỉ</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input name="username" type="text" class="form-control" id="username" aria-describedby="username" placeholder="username" required>
-                            <label for="username">Tên đăng nhập</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input name="password" type="password" class="form-control" id="password" aria-describedby="password" placeholder="**************" required>
-                            <label for="password">Mật Khẩu</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <span>Bạn đã có tài khoản ?</span> <a href="signin.php">Đăng nhập ngay !</a>
-                </div>
-                <br>
-                <div class="text-center">
-                    <button onclick="ValidateEmail(document.myForm.email)" type="submit" class="btn btn-get"><span>Đăng ký</span></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
+    <script src="../js/validateForm.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mong muốn của chúng ta
+            Validator({
+                form: '#form-1',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.isRequired('#fullname', 'Vui lòng nhập đầy đủ họ tên'),
+                    Validator.isRequired('#phone', 'Vui lòng nhập số điện thoại'),
+                    Validator.isPhone('#phone'),
+                    Validator.isRequired('#email', 'Vui lòng nhập email'),
+                    Validator.isEmail('#email'),
+                    Validator.isRequired('#address', 'Vui lòng nhập địa chỉ'),
+                    Validator.isRequired('#username', 'Vui lòng nhập username'),
+                    Validator.isRequired('#password', 'Vui lòng nhập passwword'),
+                    Validator.isRequired('#repassword', 'Vui lòng nhập lại passwword'),
+                    Validator.minLength('#username',6),
+                    Validator.minLength('#password',6),
+                    Validator.isConfirmed('#repassword', function () {
+                    return document.querySelector('#form-1 #password').value;
+                    }, 'Mật khẩu nhập lại không chính xác')
+                ],
+            });
+        });
+    </script>
+    </body>
+</html>

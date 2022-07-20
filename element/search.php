@@ -1,4 +1,4 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,16 +31,11 @@
     <?php
     if (isset($_POST["search"])) {
         $key = $_POST['key'];
-    }
-    if (isset($key)) {
-        $sql = "SELECT * FROM products WHERE products.name LIKE '%" . $key . "%'";
-        $query = mysqli_query($conn, $sql);
-    }
+        if (isset($key)) {
+            $query = mysqli_query($conn, "SELECT * FROM products WHERE products.name LIKE '%" . $key . "%'");
     ?>
     <div class="col-12 col-md-10 col-lg-8 mt-3" style="margin: 0px auto;">
-        <?php if(isset($key)) { ?>
         <p>Từ khóa tìm kiếm: <strong><?php echo $key ?></strong></p> 
-        <?php } ?>
     </div>
     <div class="new_arrivals">
         <div class="container">
@@ -63,7 +58,7 @@
                                     <div class="red_button add_to_cart_button"><a href="?page=spc&action=add&id=<?php echo $item['id'] ?>">Thêm vào giỏ hàng</a></div>
                                 </a>
                             </div>
-                        <?php } ?>
+                        <?php } } } ?>
                     </div>
                 </div>
             </div>
@@ -77,7 +72,7 @@
     }
 
     .content-search {
-        margin-bottom: 65vh;
+        margin-bottom: 5vh;
     }
 
     .form-control-borderless {

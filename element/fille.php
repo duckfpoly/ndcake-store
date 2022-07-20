@@ -32,6 +32,9 @@
     elseif($page == "myorder"){
         include('myorder.php');
     }
+    elseif($page == "myorder2"){
+        include('myorder2.php');
+    }
     elseif($page == "myordetail"){
         include('myordetail.php');
     }
@@ -49,6 +52,9 @@
     }
     elseif($page == "sendmail"){
         include('sendmail/send.php');
+    }
+    elseif($page == "gopy"){
+        include('feedback/index.php');
     }
     else {
         include('home.php');

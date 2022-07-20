@@ -117,7 +117,7 @@
                 $query = "SELECT id FROM orders ORDER BY id DESC LIMIT 1";
                 $result = $conn->query($query);
                 foreach ($result as $idOder) {
-                    echo '<script language="javascript">window.location="?page=ordersucces&orderid=' . $idOder['id'] . '";</script>';
+                    echo '<script language="javascript">window.location="?page=ordersucces";</script>';
                 }
             }
             $conn->close();

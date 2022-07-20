@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <?php
 $id_prddetail = $_GET['id'];
 if (!empty($id_prddetail)) {
@@ -46,31 +47,45 @@ if (!empty($id_prddetail)) {
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-5">
-				<div class="product_details">
-					<div class="product_details_title">
-						<h2><?php echo $items['name'] ?></h2>
-						<p><?php echo $items['mota'] ?></p>
+				<div class="col-lg-5">
+					<div class="product_details">
+						<div class="product_details_title">
+							<h2><?php echo $items['name'] ?></h2>
+						</div>
+						<div class="product_price"><?php echo $items['price'] . ".000 vnđ" ?></div>
+						<form method="post" action="?page=spc&action=add&id=<?php echo $items['id'] ?>" class="quantity  ">
+							<?php
+							// Kiểm tra $items['name'] có tồn tại "Nhân" không
+							$str = $items['name'];
+							$sub = 'Nhân';
+							// run
+								if (strpos($str, $sub) !== false) {
+							?>
+									<div class="mt-5"></div>
+									<small>Chọn 1 trong 2 </small>
+									<div class="form-check form-switch mt-3">
+										<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="toping" value="Thêm trứng muối">
+										<label class="form-check-label" for="flexSwitchCheckChecked">Thêm trứng muối</label>
+									</div>
+									<div class="form-check form-switch mt-3 mb-3">
+										<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="toping" value="Thêm phômai">
+										<label class="form-check-label" for="flexSwitchCheckChecked">Thêm phômai</label>
+									</div>
+							<?php 
+								} else {
+									
+								}
+							?>
+							<br>
+							<span>Số lượng:</span>&nbsp;&nbsp;&nbsp;
+							<div class="mt-3 text-center">
+								<input class="form-control w-25" name="number" type="number" max = 999 min = 1 value="1">
+								<button type="submit" class="btn btn-outline-success btn-md mt-5">Thêm vào giỏ hàng</button>
+							</div>
+							<!-- <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div> -->
+						</form>
 					</div>
-					<div class="product_price"><?php echo $items['price'] . ".000 vnđ" ?></div>
-					<!-- <ul class="star_rating">
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-					</ul> -->
-					<div class="product_color">
-						<h5><?php echo $items['type'] ?></h5>
-					</div>
-					<form method="post" action="?page=spc&action=add&id=<?php echo $items['id'] ?>" class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-						<span>Số lượng:</span>&nbsp;&nbsp;&nbsp;
-						<input class="form-control" name="number" type="number" max=999 min=1 value="1">
-						<button style="margin-left: 20px;" type="submit" class=" btn btn-outline-success btn-md">Thêm vào giỏ hàng</button>
-						<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-					</form>
 				</div>
-			</div>
 		</div>
 </div>
 <div class="tabs_section_container">
@@ -159,7 +174,6 @@ if (!empty($id_prddetail)) {
 					<!-- User Reviews -->
 					<div class="col-lg-6 reviews_col">
 						<div class="tab_title reviews_title">
-
 							<h4>Bình luận (<?php echo $total_number ?>)</h4>
 						</div>
 						<!-- User Review -->
@@ -187,55 +201,51 @@ if (!empty($id_prddetail)) {
 									<div class="review_date"><?php echo $content['cmt_date'] ?></div>
 									<div class="user_name mb-0"><?php echo $content['username'] ?></div>
 									<div class="rating_star">
-									<?php 
-									if($content['ratingstar'] == 1){
-										echo '
+										<?php
+										if ($content['ratingstar'] == 1) {
+											echo '
 											<span class="fa fa-star checked"></span>
 											<span class="fa fa-star "></span>
 											<span class="fa fa-star "></span>
 											<span class="fa fa-star "></span>
 											<span class="fa fa-star "></span>
 										';
-									} 
-									elseif($content['ratingstar'] == 2){
-										echo '
+										} elseif ($content['ratingstar'] == 2) {
+											echo '
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star "></span>
 										<span class="fa fa-star "></span>
 										<span class="fa fa-star "></span>
 									';
-									}
-									elseif($content['ratingstar'] == 3){
-										echo '
+										} elseif ($content['ratingstar'] == 3) {
+											echo '
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star "></span>
 										<span class="fa fa-star "></span>
 									';
-									}
-									elseif($content['ratingstar'] == 4){
-										echo '
+										} elseif ($content['ratingstar'] == 4) {
+											echo '
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star "></span>
 									';
-									}
-									elseif($content['ratingstar'] == 5){
-										echo '
+										} elseif ($content['ratingstar'] == 5) {
+											echo '
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 										<span class="fa fa-star checked"></span>
 									';
-									}
+										}
 
-									?>
-										
+										?>
+
 									</div>
 									<p><?php echo $content['content_cmt'] ?></p>
 								</div>
@@ -263,11 +273,11 @@ if (!empty($id_prddetail)) {
 								if (isset($user['username'])) {
 								?>
 									<div>
-										<h1>Thêm bình luận</h1>
-										<input id="review_name" class="form_input input_name" type="text" name="name" value="<?php echo $user['fullname'] ?>" readonly>
+										<h1 class="text-center">Thêm bình luận / Đánh giá</h1>
+										<!-- <input id="review_name" class="form_input input_name" type="text" name="name" value="<?php echo $user['fullname'] ?>" readonly> -->
 									</div>
 									<div>
-										<h1>Đánh giá</h1><br>
+										<!-- <h1>Đánh giá</h1><br> -->
 										<style>
 											#review_form i {
 												color: yellow;
@@ -280,7 +290,7 @@ if (!empty($id_prddetail)) {
 											<input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
 											<input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
 											<input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-											
+
 										</div>
 										<textarea id="review_message" class="input_review" name="message" placeholder="Bình luận" rows="4" required data-error="Please, leave us a review."></textarea>
 									</div>
@@ -339,8 +349,9 @@ if (!empty($id_prddetail)) {
 </section>
 <style>
 	.checked {
-		color:orange;
+		color: orange;
 	}
+
 	@import url(https://fonts.googleapis.com/css?family=Calibri:400,300,700);
 
 	.mt-100 {

@@ -1,9 +1,13 @@
 <?php
-$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
-if(isset($user['username'])):
+// $user = (isset($_SESSION['user'])) ? $_SESSION['user'] : [];
+$id_user = $user['id'];
+// if(isset($user['username'])):
+    $sql_user = "SELECT * FROM user_guest WHERE user_guest.id = {$id_user}";
+    $query_user = mysqli_query($conn,$sql_user);
+    foreach($query_user as $user):
 ?>
 <div style="height: 150px;"></div>
-<section class="vh-100">
+<section class="vh-100" style="z-index:5 ;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-lg-12 mb-4 mb-lg-0">
@@ -16,7 +20,7 @@ if(isset($user['username'])):
                         </div>
                         <div class="col-md-8 ">
                             <div class="card-body content_user p-4">
-                                <h6>Information | User ID: NDCAKE-GUEST-N<?php echo $user['id'] ?></h6>
+                                <span style="color:#000;">Information | User ID: NDCAKE-GUEST-N<?php echo $user['id'] ?></span>
                                 <hr class="mt-0 mb-4">
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
@@ -46,9 +50,16 @@ if(isset($user['username'])):
                 </div>
             </div>
         </div>
+        <div class="container d-flex justify-content-center align-items-center ">
+            <button onclick="showFixUser()" class="btn btn-outline-success requestfix">Chỉnh sửa thông tin cá nhân</button>
+            <button onchange="myMove()" onclick="closefix()" class="btn btn-outline-danger fixuser" style="display: none;">Hủy</button>
+        </div>
+    </div>
+    <div class="wrapper showfix" id="showfix" style="display: none;">
+        <?php include('fixuser.php') ?>
     </div>
 </section>
-<?php endif; ?>
+<?php endforeach; ?>
 <style>
     .form-control:focus {
         box-shadow: none;
@@ -107,19 +118,55 @@ if(isset($user['username'])):
             opacity: 1;
         }
     }
-
     .gradient-custom {
-        /* fallback for old browsers */
-        /* background: #f6d365; */
-        /* background: rgba(0, 0, 0, 1); */
         background: url('https://cdn.dribbble.com/users/55063/screenshots/2266143/9_squares_dot.gif') 60%;
-        /* Chrome 10-25, Safari 5.1-6 */
-        /* background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1)); */
-
-        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        /* background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1)) */
     }
     .content_user {
         background: url('https://camo.githubusercontent.com/a5be49ffbdea09c4eb4c8a5aadf69f53d1f6be437247315b656757435371b645/687474703a2f2f7368616c6c6d656e746d6f2e6769746875622e696f2f696d616765732f6c696e652d646f742d6261636b67726f756e642e676966');
     }
+    #showfix {
+        /* width: 100%; */
+        /* height: 400px; */
+        /* border: 1px solid black; */
+        animation: showFixUser 1s ease-in-out;
+        /* animation: showFixUser2 1s ease-in-out; */
+        transition: 1s ease-in-out;
+        z-index: 4;
+    }
+    @keyframes showFixUser {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+    @keyframes showFixUser2 {
+        0% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+    }
 </style>
+<script type="text/javascript">
+        const requestfix = document.querySelector('.requestfix');
+        const showfix = document.querySelector('.showfix');
+        const btnDestroy = document.querySelector('.fixuser');
+    function showFixUser() {
+        showfix.style.display = "block";
+        btnDestroy.style.display = "block";
+        requestfix.style.display = "none";
+    }
+    function closefix(){
+        showfix.style.display = "none";
+        btnDestroy.style.display = "none";
+        requestfix.style.display = "block";
+    }
+   
+</script>

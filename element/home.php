@@ -99,7 +99,10 @@
 		</div>
 	</div>
 </div>
-<button onclick="location.href='?page=products';" style="width:50%; margin:0px auto; margin-top:32px;" type="button" class="btn btn-outline-danger btn-lg btn-block">Xem thêm</button>
+<div class="detail text-center">
+	<button onclick="location.href='?page=products';" style="width:50%; margin:0px auto; margin-top:32px;" type="button" class="btn btn-outline-danger btn-lg btn-block">Xem thêm</button>
+
+</div>
 <div class="best_sellers">
 	<div class="container">
 		<div class="row">

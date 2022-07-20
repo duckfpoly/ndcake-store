@@ -73,7 +73,7 @@
 								while ($row = mysqli_fetch_assoc($result2)) {
 								?>
 									<div class="product-item <?php echo $row['name_cate'] ?>">
-										<a href="?page=product_detail&id_prddetail=<?php echo $row['id'] ?>">
+										<a href="?page=product_detail&id=<?php echo $row['id'] ?>">
 											<div class="product">
 												<div class="product_image">
 													<img src="<?php echo $row['image'] ?>" alt="">

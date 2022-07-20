@@ -13,18 +13,21 @@ if (isset($_GET['action'])) {
                     } else {
                         $_SESSION['cart'][$id]++;
                     }
+
                 } else {
                     if (isset($_POST['number'])) {
                         $_SESSION['cart'][$id] = $_POST['number'];
                     } else {
                         $_SESSION['cart'][$id] = 1;
                     }
+
                 }
                 echo '<script language="javascript"> alert("Đã thêm sản phẩm vào giỏ hàng !"); window.location="?page=products";</script>';
             } else {
                 echo '<script language="javascript"> alert("Bạn chưa đăng nhập !");  window.location="./element/signin.php";</script>';
             }
             break;
+            
         case 'del':
             $id = $_GET['id'];
             unset($_SESSION['cart'][$id]);
@@ -60,26 +63,15 @@ if (isset($_GET['action'])) {
                             <div class="row w-100">
                                 <div class="col-lg-12 col-md-12 col-12">
                                     <h3 class="display-5 mb-2 text-center">Giỏ hàng</h3>
-                                    <p class="mb-5 text-center">
-                                        <i class="text-info font-weight-bold"><?php echo count($_SESSION['cart']) ?></i> sản phẩm
-                                    </p>
-                                    <table id="shoppingCart" class="table table-condensed table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:40%">Sản phẩm</th>
-                                                <th style="width:12%">Giá</th>
-                                                <th style="width:10%">Số lượng</th>
-                                                <th style="width:10%">Thành tiền</th>
-                                                <th style="width:9%">Tùy chọn</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="myList">
+                                    
+                                   
                                             <?php
                                             if (isset($_SESSION['cart']) && $_SESSION['cart'] != null) {
                                             ?>
                                                 <?php
                                                 $ids = "0";
                                                 $tongtien = $ship = 0;
+                                                $ship = 30;
                                                 foreach (array_keys($_SESSION['cart']) as $key) :
                                                     $ids .= "," . $key;
                                                 endforeach;
@@ -88,6 +80,20 @@ if (isset($_GET['action'])) {
                                                 if (mysqli_num_rows($result) > 0) :
                                                     foreach ($result as $items) :
                                                 ?>
+                                                <p class="mb-5 text-center">
+                                                    <i class="text-info font-weight-bold"><?php echo count($_SESSION['cart']) ?></i> sản phẩm
+                                                </p>
+                                                 <table id="shoppingCart" class="table table-condensed table-responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width:40%">Sản phẩm</th>
+                                                            <th style="width:12%">Giá</th>
+                                                            <th style="width:10%">Số lượng</th>
+                                                            <th style="width:10%">Thành tiền</th>
+                                                            <th style="width:9%">Tùy chọn</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="myList">
                                                         <form method="post" action="?page=spc&action=updatePrd&id=<?php echo $items['id'] ?>">
                                                             <tr>
                                                                 <td data-th="Product">
@@ -123,22 +129,37 @@ if (isset($_GET['action'])) {
                                             $tongtien = ($tongtien + ($items['price'] * $_SESSION['cart'][$items['id']]))
                                         ?>
                                 <?php
-
                                         endforeach;
                                     endif;
                                 } else {
-                                    echo "<tr><th><h2>Giỏ hàng trống</h2></th></tr>";
+                                    echo "<div class='text-center mt-5'><img width='50%'src='https://bizweb.dktcdn.net/100/368/179/themes/738982/assets/empty-cart.png?1609300798440' alt=''></div>";
                                 }
                             ?>
                             <tfoot>
-                                <tr>
-                                    <th colspan="3">Tổng tiền hóa đơn</th>
+                            <tr>
                                     <?php if (isset($tongtien)) { ?>
-                                        <th><strong><span><?php echo $tongtien ?></span>.000 VNĐ</strong></th>
+                                        <th colspan="3">Thành tiền</th>
+                                        <th><p><span><?php echo $tongtien ?></span>.000 VNĐ</p></th>
                                     <?php } else { ?>
-                                        <th><span>......</span></th>
+                                        <th><span></span></th>
                                     <?php } ?>
                                 </tr>
+                            <tr>
+                                <?php if (isset($tongtien)) { ?>
+                                    <th colspan="3">Phí ship</th>
+                                    <th><p><span><?php echo $ship ?></span>.000 VNĐ</p></th>
+                                <?php } else { ?>
+                                    <th><span></span></th>
+                                <?php } ?>
+                            </tr>
+                            <tr>
+                                <?php if (isset($tongtien)) { ?>
+                                    <th colspan="3">Tổng tiền đơn hàng</th>
+                                    <th><p><span><?php echo $ship + $tongtien ?></span>.000 VNĐ</p></th>
+                                <?php } else { ?>
+                                    <th><span></span></th>
+                                <?php } ?>
+                            </tr>
                             </tfoot>
                                     </table>
                                 </div>
@@ -160,10 +181,7 @@ if (isset($_GET['action'])) {
                                 <?php
                                 } else {
                                 ?>
-                                    <div class="col-sm-6 order-md-2 text-right">
-                                        <button disabled class="btn btn-outline-dark mb-4 btn-sm pl-5 pr-5"><i class="fas fa-trash"></i> Xóa toàn bộ giỏ hàng</button>
-                                        <button disabled type="submit" class="btn btn-outline-dark mb-4 btn-sm pl-5 pr-5"> <i class="fas fa-sync"></i> Cập nhật giỏ hàng</button>
-                                        </form>
+                                   
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
                                         <a href="?page=products">
@@ -180,14 +198,158 @@ if (isset($_GET['action'])) {
             <?php
             if (isset($_SESSION['cart']) && $_SESSION['cart'] != null) {
             ?>
-                <a href="?page=order" class="btn btn-dark rounded-pill py-2 btn-block">Thanh toán</a>
+                <a href="?page=order" class="btn btn-dark rounded-pill py-2 btn-block">Tiến hành thanh toán</a>
             <?php
             } else {
             ?>
-                <button disabled class="btn btn-dark rounded-pill py-2 btn-block">Thanh toán</button>
+                <!-- <button disabled class="btn btn-dark rounded-pill py-2 btn-block">Không có gì trong giỏ hàng. <strong>Không thể tiến hành thanh toán</strong></button> -->
             <?php
             }
             ?>
         </div>
     </div>
 </div>
+<section>
+	<div class="best_sellers">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title new_arrivals_title">
+						<h2>Sản phẩm</h2>
+					</div>
+				</div>
+			</div>
+			<div class="container d-flex justify-content-center mt-100">
+				<div class="row">
+					<?php
+					$sql = "SELECT * FROM products LIMIT 4";
+					$data_box = mysqli_query($conn, $sql);
+					foreach ($data_box as $box) :
+					?>
+						<div class="col-md-3">
+							<div class="product-wrapper mb-45 text-center">
+								<div class="product-img"> <a href="?page=product_detail&id=<?php echo $box['id'] ?>" data-abc="true"> <img width="100%" src="<?php echo $box['image'] ?>" alt=""> </a>
+									<span class="text-center" style="font-size:10px ;"><?php echo $box['fill'] ?> | <?php echo $box['price'] ?>.000 VNĐ</span><br>
+									<div class="product-action">
+										<div class="product-action-style"><a href="?page=product_detail&id=<?php echo $box['id'] ?>"><i class="fa fa-bookmark"></i> </a> <a href="?page=spc&action=add&id=<?php echo $box['id'] ?>"> <i class="fa fa-shopping-cart"></i></a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<style>
+	.checked {
+		color: orange;
+	}
+
+	@import url(https://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+	.mt-100 {
+		margin-top: 100px
+	}
+
+	.product-wrapper,
+	.product-img {
+		overflow: hidden;
+		position: relative
+	}
+
+	.mb-45 {
+		margin-bottom: 45px
+	}
+
+	.product-action {
+		bottom: 0px;
+		left: 0;
+		opacity: 0;
+		position: absolute;
+		right: 0;
+		text-align: center;
+		transition: all 0.6s ease 0s
+	}
+
+	.product-wrapper {
+		border-radius: 10px
+	}
+
+	.product-img>span {
+		background-color: #fff;
+		box-shadow: 0 0 8px 1.7px rgba(0, 0, 0, 0.06);
+		color: #333;
+		display: inline-block;
+		font-size: 12px;
+		font-weight: 500;
+		left: 20px;
+		letter-spacing: 1px;
+		padding: 3px 12px;
+		position: absolute;
+		text-align: center;
+		text-transform: uppercase;
+		top: 20px
+	}
+
+	.product-action-style {
+		background-color: #fff;
+		box-shadow: 0 0 8px 1.7px rgba(0, 0, 0, 0.06);
+		display: inline-block;
+		padding: 16px 2px 12px
+	}
+
+	.product-action-style>a {
+		color: #979797;
+		line-height: 1;
+		padding: 0 21px;
+		position: relative
+	}
+
+	.product-action-style>a.action-plus {
+		font-size: 18px
+	}
+
+	.product-wrapper:hover .product-action {
+		bottom: 20px;
+		opacity: 1
+	}
+
+	.rating {
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: center;
+	}
+
+	.rating>input {
+		display: none;
+	}
+
+	.rating>label {
+		position: relative;
+		width: 1em;
+		font-size: 26px;
+		color: #FFD600;
+		cursor: pointer;
+	}
+
+	.rating>label::before {
+		content: "\2605";
+		position: absolute;
+		opacity: 0;
+	}
+
+	.rating>label:hover:before,
+	.rating>label:hover~label:before {
+		opacity: 1 !important;
+	}
+
+	.rating>input:checked~label:before {
+		opacity: 1;
+	}
+
+	.rating:hover>input:checked~label:before {
+		opacity: 0.4;
+	}
+</style>

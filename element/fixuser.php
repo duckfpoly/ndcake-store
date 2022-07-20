@@ -1,5 +1,5 @@
 <?php
-$id_user = $_GET['id_user'];
+$id_user = $user['id'];
 $fullname = "";
 $username = "";
 $address = "";
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE user_guest SET fullname = '{$fullname}',username = '{$username}', address = '{$address}', email = '{$email}' , phone = '{$phone}' WHERE id = {$id_user}";
         $query = mysqli_query($conn, $sql);
         if ($query) {
-            echo '<script language="javascript">alert("Sửa thông tin thành công !!!"); window.location="?page=profile_guest&id='.$id_user.'";</script>';
+            echo '<script language="javascript">window.location="?page=profile_guest";</script>';
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $query_user = mysqli_query($conn,$sql_user);
             foreach($query_user as $user):
         ?>
-        <div class="container" style="margin-top: 150px;">
+        <div class="container">
             <div class="row gutters">
                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="card h-100">
@@ -50,12 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <img src="<?php echo $user['url_image'] ?>" alt="img_user">
                                     </div>
                                     <h5 class="user-name"><?php echo $user['fullname'] ?></h5>
-                                    <!-- <h6 class="user-email">yuki@Maxwell.com</h6> -->
                                 </div>
-                                <!-- <div class="about">
-                            <h5>About</h5>
-                            <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
-                        </div> -->
                             </div>
                         </div>
                     </div>
@@ -98,7 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <!-- <label for="zIp">Zip Code</label> -->
                                         <input name="address_update" type="text" class="form-control" id="address" placeholder="Enter address" value="<?php echo $user['address'] ?>">
                                     </div>
                                 </div>
@@ -106,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="row gutters">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-secondary" onclick="location.href='?page=profile_guest&id=<?php echo $id_user ?>'">Hủy</button>
+                                        <!-- <button type="button" class="btn btn-secondary" onclick="location.href='?page=profile_guest'">Hủy</button> -->
                                         <button type="submit" id="submit" name="submit" class="btn btn-primary">Cập nhật</button>
                                     </div>
                                 </div>

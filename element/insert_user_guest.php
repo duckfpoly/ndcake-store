@@ -42,7 +42,7 @@
                             VALUES ('{$fullname}','{$username}','{$pass}','{$phone}','{$email}','{$address}','https://www.pngitem.com/pimgs/m/576-5768680_avatar-png-icon-person-icon-png-free-transparent.png')";
             $query = mysqli_query($conn,$sql);
             if ($query){
-                echo '<script language="javascript">alert("Đăng ký thành công !"); window.location="signin.php";</script>';
+                echo '<script language="javascript">alert("Đăng ký thành công !"); window.location="dangnhap.php";</script>';
             }
             else {
                 echo '<script language="javascript">alert("Có lỗi trong quá trình xử lý"); window.location="signup.php";</script>';

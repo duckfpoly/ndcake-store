@@ -1,6 +1,34 @@
-
+<?php
+include('connectdb.php');
+$username = "";
+$password = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["username"])) {
+        $username = $_POST['username'];
+    }
+    if (isset($_POST["password"])) {
+        $password = $_POST['password'];
+    }
+    $sql = "SELECT * FROM user_guest WHERE username = '$username'";
+    $query = mysqli_query($conn, $sql);
+    $data = mysqli_fetch_assoc($query);
+    $checkUsername = mysqli_num_rows($query);
+    if ($checkUsername == 1) {
+        $checkPass = password_verify($password, $data['password']);
+        if ($checkPass) {
+            $_SESSION['user'] = $data;
+            header('location: ../');
+        } else {
+            echo '<script language="javascript">alert("Sai mật khẩu !!!"); window.location="signin.php";</script>';
+        }
+    } else {
+        echo '<script language="javascript">alert("username không tồn tại !!!"); window.location="signin.php";</script>';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>NDCAKE - ĐĂNG NHẬP</title>
     <meta charset="utf-8">
@@ -37,34 +65,8 @@
         }
     </style>
 </head>
-<body>
-<?php
-include('connectdb.php');
-if (
-  isset($_GET["key"]) && isset($_GET["email"]) && isset($_GET["action"])
-  && ($_GET["action"] == "reset") && !isset($_POST["action"])
-) {
-  $key = $_GET["key"];
-  $email = $_GET["email"];
-  $curDate = date("Y-m-d H:i:s");
-  $query = mysqli_query(
-    $conn,
-    "SELECT * FROM `password_reset_temp` WHERE `key`='" . $key . "' and `email`='" . $email . "';"
-  );
-  $row = mysqli_num_rows($query);
-  if ($row == "") {
-    $error .= '<h2>Liên kết không hợp lệ</h2>
-<p>Liên kết không hợp lệ / hết hạn. Hoặc bạn đã không sao chép đúng liên kết
-từ email hoặc bạn đã sử dụng khóa trong trường hợp đó
-đã ngừng hoạt động.</p>
-<p><a href="http://storendcake.000webhostapp.com/element/request_reset_pass.php">
-Click here</a> to reset password.</p>';
-  } else {
-    $row = mysqli_fetch_assoc($query);
-    $expDate = $row['expDate'];
-    if ($expDate >= $curDate) {
-?>
 
+<body>
     <!-- start -->
     <section class="h-100 gradient-form content">
         <div class="container py-5 h-100">
@@ -76,26 +78,34 @@ Click here</a> to reset password.</p>';
                                 <div class="card-body  p-md-5 mx-md-4">
                                     <div class="text-center">
                                         <img src="https://cdn.glitch.global/e4e5a7c2-c10e-4ecd-b570-505542b6edc1/img2.png?v=1656818794378" style="width: 185px;" alt="logo">
-                                        <h4 class="mt-1 mb-3 pb-1">NDCAKE SUPPORT</h4>
+                                        <h4 class="mt-1 mb-3 pb-1">We are NDCAKE Team</h4>
                                     </div>
                                     <form method="post" class="form" id="form-1">
-                                        <p class="text-center mb-5">RESET PASSWORD</p>
+                                        <p class="text-center mb-5">LOGIN TO NDCAKE</p>
                                         <div class="form-group">
-                                            <label for="password">Mật khẩu mới</label>
+                                            <label for="username">Username</label>
+                                            <input name="username" type="text" class="form-control" id="username">
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
                                             <input name="password" type="password" class="form-control" id="password">
-                                            <span class="form-message"><br></span>
+                                            <span class="form-message"></span>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="repassword">Nhập lại mật khẩu mới</label>
-                                            <input name="repassword" type="password" class="form-control" id="repassword">
-                                            <span class="form-message"><br></span>
-                                        </div>
+                                        <!-- <input type="checkbox" onclick="myFunction()">&nbsp;Show Password -->
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="showpassword()">
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="myFunction()">
                                             <label class="form-check-label" for="flexSwitchCheckChecked">Show Password</label>
                                         </div>
-                                        <div class="text-center mt-5 pt-1 mb-5 pb-1">
-                                            <button class="btn btn-outline-danger fa-lg mb-3" type="submit">Lưu mật khẩu</button><br>
+                                        <div class="text-center mt-4 pt-1 mb-5 pb-1">
+                                            <button class="btn btn-outline-danger fa-lg mb-3" type="submit">Đăng nhập</button><br>
+                                            <a class="text-muted" href="request_reset_pass.php">Quên mật khẩu?</a>
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-center pb-4">
+                                            <p class="mb-0 me-2">Bạn chưa có tài khoản?</p>
+                                            <!-- <button onclick="location.href='signup.php'" type="submit" class="btn btn-outline-danger">Đăng ký ngay</button> -->
+                                            <a href="signup.php" class="btn btn-outline-danger">Đăng ký ngay</a>
                                         </div>
                                     </form>
                                 </div>
@@ -114,47 +124,6 @@ Click here</a> to reset password.</p>';
             </div>
         </div>
     </section>
-    <?php
-    } else {
-      $error .= "<h2>Link Expired</h2>
-<p>The link is expired. You are trying to use the expired link which 
-as valid only 24 hours (1 days after request).<br /><br /></p>";
-    }
-  }
-  if ($error != "") {
-    echo "<div class='error'>" . $error . "</div><br />";
-  }
-} // isset email key validate end
-if (
-  isset($_POST["email"]) && isset($_POST["action"]) &&
-  ($_POST["action"] == "update")
-) {
-  $error = "";
-  $pass1 = mysqli_real_escape_string($conn, $_POST["password"]);
-  $pass2 = mysqli_real_escape_string($conn, $_POST["repassword"]);
-  $email = $_POST["email"];
-  $curDate = date("Y-m-d H:i:s");
-  if ($pass1 != $pass2) {
-    $error .= "<p>Password do not match, both password should be same.<br /><br /></p>";
-  }
-  if ($error != "") {
-    echo "<div class='error'>" . $error . "</div><br />";
-  } else {
-    // $pass1 = md5($pass1);
-    $pass1 = password_hash($$pass1, PASSWORD_DEFAULT);
-    mysqli_query(
-      $conn,
-      "UPDATE `user_guest` SET `password`='$pass1' WHERE `email`='$email';"
-    );
-
-    mysqli_query($conn, "DELETE FROM `password_reset_temp` WHERE `email`='" . $email . "';");
-
-    echo '<div class="error"><p>Congratulations! Your password has been updated successfully.</p>
-<p><a href="signin.php">
-Click here</a> to Login.</p></div><br />';
-  }
-}
-?>
     <script src="../js/validateForm.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -164,13 +133,10 @@ Click here</a> to Login.</p></div><br />';
                 formGroupSelector: '.form-group',
                 errorSelector: '.form-message',
                 rules: [
+                    Validator.isRequired('#username', 'Vui lòng nhập username'),
                     Validator.isRequired('#password', 'Vui lòng nhập passwword'),
-                    Validator.isRequired('#repassword', 'Vui lòng nhập lại passwword'),
-                    Validator.minLength('#password',6),
-                    Validator.minLength('#repassword',6),
-                    Validator.isConfirmed('#repassword', function () {
-                    return document.querySelector('#form-1 #password').value;
-                    }, 'Mật khẩu nhập lại không chính xác')
+                    Validator.minLength('#username',1),
+                    Validator.minLength('#password', 1),
                 ],
             });
         });
